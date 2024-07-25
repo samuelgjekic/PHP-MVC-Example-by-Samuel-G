@@ -12,5 +12,10 @@ class HomeController extends Controller
 
         $this->render('index');
     }
+
+    public function examplepage()
+    {
+        $this->render('example');
+    }
     
 }
