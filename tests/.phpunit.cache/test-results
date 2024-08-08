@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"UnitTest::testThis":0.171}}
+{"version":1,"defects":{"UnitTest::testCreateDefaultTables":5,"UnitTest::testDatabase":7},"times":{"UnitTest::testThis":0.171,"UnitTest::testDatabase":0.041,"UnitTest::testCreateDefaultTables":0.013}}
