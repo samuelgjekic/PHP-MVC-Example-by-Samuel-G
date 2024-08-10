@@ -26,5 +26,4 @@ class MovieModel extends Model
         return $stmt->execute();
     }
 
-    // Lägg till fler metoder för att hantera Movies-kollektionen
 }
