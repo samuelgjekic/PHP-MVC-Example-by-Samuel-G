@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
-require_once '../src/controller.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Controller.php';
 
 use App\Controller;
 
