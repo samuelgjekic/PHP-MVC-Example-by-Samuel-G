@@ -1,7 +1,7 @@
 <div class="container mt-5">
     <h1 class="mb-4">Add a New Movie</h1>
     
-    <form action="/movies/store" method="POST">
+    <form action="/store" method="POST">
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" id="title" name="title" required>

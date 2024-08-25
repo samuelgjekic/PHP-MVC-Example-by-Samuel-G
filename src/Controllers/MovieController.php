@@ -7,12 +7,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Models/Movie.php';
 
 use App\Controller;
 use App\Models\Movie;
+use App\Database;
+use FG\ASN1\Universal\Integer;
 
 class MovieController extends Controller
 {
     public function index()
     {
-        $movies = $this->getAllMovies();
+        $movies = $this->fetchAllMoviesWithGenres();
         $this->render('Movies/index', ['movies' => $movies]);
     }
 
@@ -28,10 +30,36 @@ class MovieController extends Controller
         $releaseDate = $_POST['release_date'];
         $genreId = $_POST['genre_id'];
 
+        if($genreId == null){
+            $genreId = 5;
+        }
         $this->createMovie($title, $description, $releaseDate, $genreId);
-
-        header('Location: /movies');
+        header('Location: /');
         exit();
+    }
+
+    public function fetchAllMoviesWithGenres(): array
+    {
+
+        $query = "
+            SELECT m.id, m.title, m.description, m.release_date, g.name as genre
+            FROM Movies m
+            JOIN Movie_Genres g ON m.genre_id = g.id
+        ";
+        $result = $this->db->query($query);
+
+        $movies = [];
+        while ($row = $result->fetch_assoc()) {
+            $movies[] = new Movie(
+                $row['id'],
+                $row['title'],
+                $row['description'],
+                $row['release_date'],
+                $row['genre']
+            );
+        }
+
+        return $movies;
     }
 
     public function getAllMovies()
@@ -79,6 +107,18 @@ class MovieController extends Controller
         $stmt->bind_param('sssi', $title, $description, $releaseDate, $genreId);
         return $stmt->execute();
     }
+
+    public function delete($id)
+{
+    $stmt = $this->db->prepare("DELETE FROM Movies WHERE id = ?");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+
+    // Redirect back to the movies index after deletion
+    header('Location: /');
+    exit;
+}
+
 
     
 }

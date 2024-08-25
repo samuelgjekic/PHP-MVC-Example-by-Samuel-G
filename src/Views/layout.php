@@ -13,10 +13,10 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/">Hem</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/example">Example Page</a>
+                    <a class="nav-link" href="/api/list">Trendande Filmer</a>
                 </li>
             </ul>
         </div>

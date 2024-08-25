@@ -1,7 +1,10 @@
 <?php
 namespace App\Models;
+use App\Database;
 
-require_once '../src/Model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Database/Database.php';
+
 
 class Movie extends Model
 {
@@ -9,15 +12,15 @@ class Movie extends Model
     protected string $title;
     protected string $description;
     protected string $releaseDate;
-    protected int $genre;
+    protected string $genre;
 
-    public function __construct(int $id, string $title, string $description, string $releaseDate, int $genreId)
+    public function __construct(int $id, string $title, string $description, string $releaseDate, string $genre)
     {
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->releaseDate = $releaseDate;
-        $this->genre = $genreId;
+        $this->genre = $genre;
     }
 
     public function getId(): int
@@ -42,32 +45,7 @@ class Movie extends Model
 
     public function getGenre(): string
     {
-        switch ($this->genre) {
-            case 1: return 'Skräck';
-            case 2: return 'Action';
-            case 3: return 'Komedi';
-            case 4: return 'Äventyr';
-            default: return 'Ingen Genre Angiven';
-        }
-    }
-
-    public function setTitle(string $title)
-    {
-        $this->title = $title;
-    }
-
-    public function setDesc(string $description)
-    {
-        $this->description = $description;
-    }
-
-    public function setReleaseDate(string $releaseDate)
-    {
-        $this->releaseDate = $releaseDate;
-    }
-
-    public function setGenreId(int $genreId)
-    {
-        $this->genre = $genreId;
+        return $this->genre;
     }
 }
+

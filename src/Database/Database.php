@@ -55,7 +55,7 @@ class Database
     {
         $query = "CREATE DATABASE IF NOT EXISTS $database";
         if ($this->mysqli->query($query) === true) {
-            echo "Database '$database' created successfully or already exists.\n";
+           // Lyckades
         } else {
             echo "Error creating database '$database': " . $this->mysqli->error . "\n";
         }
@@ -71,8 +71,8 @@ class Database
 
         $query = "CREATE TABLE IF NOT EXISTS $tableName ($colDefinitions)";
         if ($this->mysqli->query($query) === true) {
-            echo "Table '$tableName' created successfully.\n";
-        } else {
+            //Lyckades...
+                } else {
             echo "Error creating table '$tableName': " . $this->mysqli->error . "\n";
         }
     }
@@ -83,49 +83,75 @@ class Database
      * @return void|bool
      */
     private function createDefaultTables()
-    {
-        // Define columns for the Movie_Genres table
-$genreColumns = [
-    'id' => [
-        'type' => 'INT',
-        'options' => 'AUTO_INCREMENT PRIMARY KEY'
-    ],
-    'name' => [
-        'type' => 'VARCHAR(255)',
-        'options' => 'NOT NULL'
-    ]
-];
+{
+    // Define columns for the Movie_Genres table
+    $genreColumns = [
+        'id' => [
+            'type' => 'INT',
+            'options' => 'AUTO_INCREMENT PRIMARY KEY'
+        ],
+        'name' => [
+            'type' => 'VARCHAR(255)',
+            'options' => 'NOT NULL'
+        ]
+    ];
 
-// Define columns for the Movies table
-$movieColumns = [
-    'id' => [
-        'type' => 'INT',
-        'options' => 'AUTO_INCREMENT PRIMARY KEY'
-    ],
-    'title' => [
-        'type' => 'VARCHAR(255)',
-        'options' => 'NOT NULL'
-    ],
-    'description' => [
-        'type' => 'TEXT',
-        'options' => 'NOT NULL'
-    ],
-    'release_date' => [
-        'type' => 'DATE',
-        'options' => 'NOT NULL'
-    ],
-    'genre_id' => [
-        'type' => 'INT',
-        'options' => 'NOT NULL'
-    ],
-    'FOREIGN KEY (genre_id)' => [
-        'type' => '',
-        'options' => 'REFERENCES Movie_Genres(id)'
-    ]
-];
+    // Define columns for the Movies table
+    $movieColumns = [
+        'id' => [
+            'type' => 'INT',
+            'options' => 'AUTO_INCREMENT PRIMARY KEY'
+        ],
+        'title' => [
+            'type' => 'VARCHAR(255)',
+            'options' => 'NOT NULL'
+        ],
+        'description' => [
+            'type' => 'TEXT',
+            'options' => 'NOT NULL'
+        ],
+        'release_date' => [
+            'type' => 'DATE',
+            'options' => 'NOT NULL'
+        ],
+        'genre_id' => [
+            'type' => 'INT',
+            'options' => 'NOT NULL',
+        ],
+        'FOREIGN KEY (genre_id)' => [
+            'type' => '',
+            'options' => 'REFERENCES Movie_Genres(id) ON DELETE CASCADE ON UPDATE CASCADE'
+        ]
+    ];
 
-    
-    $this->addTable('Movies',$movieColumns);
-    $this->addtable('Movie_Genres',$genreColumns);
+    $this->addTable('Movie_Genres', $genreColumns);
+    $this->addTable('Movies', $movieColumns);
+
+    // Insert default genres into the Movie_Genres table only if they don't already exist
+    $defaultGenres = [
+        ['name' => 'Skräck'],
+        ['name' => 'Action'],
+        ['name' => 'Komedi'],
+        ['name' => 'Äventyr'],
+        ['name' => 'Ingen Genre Tillgänglig']
+    ];
+
+    foreach ($defaultGenres as $genre) {
+        $query = "SELECT id FROM Movie_Genres WHERE name = '{$genre['name']}' LIMIT 1";
+        $result = $this->mysqli->query($query);
+
+        if ($result->num_rows == 0) {
+            // Genre does not exist, insert it
+            $insertQuery = "INSERT INTO Movie_Genres (name) VALUES ('{$genre['name']}')";
+            if ($this->mysqli->query($insertQuery) === true) {
+                echo "Genre '{$genre['name']}' inserted successfully.\n";
+            } else {
+                echo "Error inserting genre '{$genre['name']}': " . $this->mysqli->error . "\n";
+            }
+        } else {
+            //Finns redan
+             }
+    }
 }
+
 }
