@@ -1,5 +1,5 @@
 <?php
-
+// Singleton Databas
 namespace App;
 use Exception;
 
@@ -10,7 +10,7 @@ class Database
 
     private function __construct()
     {
-         // Define database connection details
+         // Databas anslutningsinformation
          $host = 'localhost';
          $username = 'admin';
          $password = 'password';
@@ -34,7 +34,12 @@ class Database
 
 
      }
-
+    
+    /**
+     * getInstance
+     * Denna metod returerar singleton instancen
+     * @return Database
+     */
     public static function getInstance()
     {
         if (self::$instance === null) {
@@ -50,7 +55,13 @@ class Database
     {
         return $this->mysqli;
     }
-
+    
+    /**
+     * createDatabase
+     * Denna funktion skapar databasen om den redan inte existerar
+     * @param  mixed $database
+     * @return void
+     */
     private function createDatabase($database)
     {
         $query = "CREATE DATABASE IF NOT EXISTS $database";
@@ -60,7 +71,14 @@ class Database
             echo "Error creating database '$database': " . $this->mysqli->error . "\n";
         }
     }
-
+    
+    /**
+     * addTable
+     * Denna funktion skapar ett table med columbs till databasen baserat på parametrarna.
+     * @param  mixed $tableName
+     * @param  mixed $columns
+     * @return void
+     */
     public function addTable($tableName, $columns)
     {
         $colDefinitions = [];
@@ -79,12 +97,12 @@ class Database
     
     /**
      * createDefaultTables
-     * This functions creates the default tables needed for my school project.
+     * Denna funktion skapar dom standard default tables som behövs för detta projekt.
      * @return void|bool
      */
     private function createDefaultTables()
 {
-    // Define columns for the Movie_Genres table
+    // Movie_Genres columns
     $genreColumns = [
         'id' => [
             'type' => 'INT',
@@ -96,7 +114,7 @@ class Database
         ]
     ];
 
-    // Define columns for the Movies table
+    // Movie Columns
     $movieColumns = [
         'id' => [
             'type' => 'INT',
@@ -127,7 +145,7 @@ class Database
     $this->addTable('Movie_Genres', $genreColumns);
     $this->addTable('Movies', $movieColumns);
 
-    // Insert default genres into the Movie_Genres table only if they don't already exist
+    // Insert, om dom redan inte existerar
     $defaultGenres = [
         ['name' => 'Skräck'],
         ['name' => 'Action'],
@@ -141,7 +159,7 @@ class Database
         $result = $this->mysqli->query($query);
 
         if ($result->num_rows == 0) {
-            // Genre does not exist, insert it
+            // Existerar inte, lägg till
             $insertQuery = "INSERT INTO Movie_Genres (name) VALUES ('{$genre['name']}')";
             if ($this->mysqli->query($insertQuery) === true) {
                 echo "Genre '{$genre['name']}' inserted successfully.\n";

@@ -4,5 +4,5 @@ use App\Database;
 
 class Model 
 {
- 
+ // Inget än
 }

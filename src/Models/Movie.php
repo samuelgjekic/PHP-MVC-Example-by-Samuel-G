@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 use App\Database;
-
+// Movie modellen, för att lätt skapa filmer och komma åt deras data med hjälp av objektet.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Database/Database.php';
 

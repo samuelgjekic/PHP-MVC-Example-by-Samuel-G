@@ -1,4 +1,4 @@
-<?php
+<?php // Detta är filen som startar vår MVC App
 
 require '../vendor/autoload.php';
 

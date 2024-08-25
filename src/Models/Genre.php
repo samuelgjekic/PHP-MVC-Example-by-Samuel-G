@@ -1,6 +1,6 @@
 <?php
 namespace App\Models;
-
+// Genre modellen, för att lättare kunna hantera och store olika genres.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model.php';
 
 class Genre extends Model

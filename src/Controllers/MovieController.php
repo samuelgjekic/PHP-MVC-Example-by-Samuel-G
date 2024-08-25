@@ -11,18 +11,33 @@ use App\Database;
 use FG\ASN1\Universal\Integer;
 
 class MovieController extends Controller
-{
+{    
+    /**
+     * index
+     * Denna funktion render index sidan av filmerna
+     * @return void
+     */
     public function index()
     {
         $movies = $this->fetchAllMoviesWithGenres();
         $this->render('Movies/index', ['movies' => $movies]);
     }
-
+    
+    /**
+     * create
+     * Detta är huvudsidan för att skapa ny film, denna funktion laddar den rätta view
+     * @return void
+     */
     public function create()
     {
         $this->render('Movies/add');
     }
-
+    
+    /**
+     * store
+     * Detta är funktionen vi kör från rutt för att lägga till ny film i databasen.
+     * @return void
+     */
     public function store()
     {
         $title = $_POST['title'];
@@ -37,7 +52,13 @@ class MovieController extends Controller
         header('Location: /');
         exit();
     }
-
+    
+    /**
+     * fetchAllMoviesWithGenres
+     * Denna hämtar alla filmer från databasen men hämtar även deras Genre genom
+     * Genre ID eftersom dom är sammankopplade.
+     * @return array
+     */
     public function fetchAllMoviesWithGenres(): array
     {
 
@@ -61,7 +82,13 @@ class MovieController extends Controller
 
         return $movies;
     }
-
+    
+    /**
+     * getAllMovies
+     * denna funktion hämtar alla filmer från databasen och lägger till dom i en 
+     * array efter att dom skapas som Movie objekt.
+     * @return array
+     */
     public function getAllMovies()
     {
         $query = "SELECT * FROM Movies";
@@ -80,7 +107,13 @@ class MovieController extends Controller
 
         return $movies;
     }
-
+    
+    /**
+     * getMovieById
+     * Hämtar film baserat på ID från databasen, används ej i huvudsidan dock.
+     * @param  mixed $id
+     * @return void|Movie
+     */
     public function getMovieById($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM Movies WHERE id = ?");
@@ -100,7 +133,16 @@ class MovieController extends Controller
 
         return null;
     }
-
+    
+    /**
+     * createMovie
+     * Denna fnktion skapar en film och lägger in den i databasen.
+     * @param  mixed $title
+     * @param  mixed $description
+     * @param  mixed $releaseDate
+     * @param  mixed $genreId
+     * @return bool
+     */
     public function createMovie($title, $description, $releaseDate, $genreId)
     {
         $stmt = $this->db->prepare("INSERT INTO Movies (title, description, release_date, genre_id) VALUES (?, ?, ?, ?)");
@@ -114,7 +156,7 @@ class MovieController extends Controller
     $stmt->bind_param('i', $id);
     $stmt->execute();
 
-    // Redirect back to the movies index after deletion
+    // Skicka tillbaka användaren till huvudsidan
     header('Location: /');
     exit;
 }

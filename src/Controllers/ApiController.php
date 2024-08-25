@@ -32,7 +32,8 @@ class ApiController extends Controller
      * getGenres
      * Denna funktion hämtar alla movie genres från TMDB Api och returerar
      * dom i en array. Denna funktion är ett exempel på att hämta data från en API.
-     * Den skapar Genre modeller och lägger dom i en array.
+     * Den skapar Genre modeller och lägger dom i en array. 
+     * NOTERA ATT DENNA FUNKTION INTE ANVÄNDS LÄNGRE, DÅ JAG HITTADE ETT BÄTTRE SÄTT, DETTA ÄR ENDAST ETT EXEMPEL.
      * @return []
      */
     public function getGenres() : array
